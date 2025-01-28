@@ -19,6 +19,12 @@ set(PROJECT_SOURCES
         src/mainWindow.ui
 )
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
+include(AddGitSubmodule)
+
+add_git_submodule("${PROJECT_SOURCE_DIR}/external/Catch2")
+add_git_submodule("${PROJECT_SOURCE_DIR}/external/spdlog")
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(signatureProject
         MANUAL_FINALIZATION
@@ -43,6 +49,8 @@ else()
 endif()
 
 target_link_libraries(signatureProject PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+#target_link_libraries(signatureProject PUBLIC Catch2::Catch2WithMain)
+target_link_libraries(signatureProject PRIVATE spdlog::spdlog)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
