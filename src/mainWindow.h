@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "headerWidget.h"
+#include "rowWidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,5 +21,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QVector<RowWidget*> rows;
 };
 #endif // MAINWINDOW_H
