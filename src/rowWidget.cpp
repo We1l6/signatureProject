@@ -27,11 +27,13 @@ RowWidget::RowWidget(const int index, const QVector<int> &columnWidths, const in
     }
 
     QPushButton *button1 = new QPushButton("", this);
+    connect(button1, &QPushButton::clicked, this, &RowWidget::button1Pressed);
     button1->setMinimumWidth(columnWidths[columnWidths.size() - 2]);
     button1->setFixedHeight(rowHeight+1);
     layout->addWidget(button1);
 
     QPushButton *button2 = new QPushButton("", this);
+    connect(button2, &QPushButton::clicked, this, &RowWidget::button2Pressed);
     button2->setMinimumWidth(columnWidths[columnWidths.size() - 1]);
     button2->setFixedHeight(rowHeight+1);
     layout->addWidget(button2);
@@ -55,3 +57,10 @@ void RowWidget::highlightRow()
     }
 }
 
+void RowWidget::button1Pressed(){
+
+}
+
+void RowWidget::button2Pressed(){
+
+}

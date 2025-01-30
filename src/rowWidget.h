@@ -18,5 +18,8 @@ private:
 
     void resetRowColor();
     void highlightRow();
+
+    void button1Pressed();
+    void button2Pressed();
 };
 #endif // ROWWIDGET_H
