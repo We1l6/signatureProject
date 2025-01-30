@@ -1,0 +1,27 @@
+#ifndef ROWWIDGET_H
+#define ROWWIDGET_H
+
+#include <QWidget>
+#include <QLineEdit>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QPushButton>
+
+class RowWidget : public QWidget {
+Q_OBJECT
+public:
+    explicit RowWidget(const int index, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent = nullptr);
+
+private:
+    int m_index = 0;
+    QVector<QLineEdit*> m_inputs;
+    QPushButton *m_button1 = nullptr;
+    QPushButton *m_button2 = nullptr;
+
+    void resetRowColor();
+    void highlightRow();
+
+    void button1Pressed();
+    void button2Pressed();
+};
+#endif // ROWWIDGET_H
