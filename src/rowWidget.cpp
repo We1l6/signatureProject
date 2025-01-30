@@ -19,6 +19,8 @@ RowWidget::RowWidget(const int index, const QVector<int> &columnWidths, const in
 
     for (int i = 1; i < columnWidths.size() - 2; ++i) {
         QLineEdit *edit = new QLineEdit(this);
+        connect(edit, &QLineEdit::textEdited, this, &RowWidget::highlightRow);
+        connect(edit, &QLineEdit::editingFinished, this, &RowWidget::resetRowColor);
         edit->setMinimumWidth(columnWidths[i]);
         inputs.push_back(edit);
         layout->addWidget(edit);
@@ -37,5 +39,19 @@ RowWidget::RowWidget(const int index, const QVector<int> &columnWidths, const in
     setLayout(layout);
 
     verticalLayout->addWidget(this);
+}
+
+void RowWidget::resetRowColor()
+{
+    for (int column = 0; column < inputs.size(); ++column) {
+        inputs[column]->setStyleSheet("QLineEdit { background-color: white;}");
+    }
+}
+
+void RowWidget::highlightRow()
+{
+    for (int column = 0; column < inputs.size(); ++column) {
+        inputs[column]->setStyleSheet("QLineEdit { background-color: yellow;}");
+    }
 }
 

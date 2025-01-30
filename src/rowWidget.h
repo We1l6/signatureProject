@@ -15,5 +15,8 @@ public:
 private:
     int m_index = 0;
     QVector<QLineEdit*> inputs;
+
+    void resetRowColor();
+    void highlightRow();
 };
 #endif // ROWWIDGET_H
