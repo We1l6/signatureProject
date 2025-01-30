@@ -14,7 +14,9 @@ public:
 
 private:
     int m_index = 0;
-    QVector<QLineEdit*> inputs;
+    QVector<QLineEdit*> m_inputs;
+    QPushButton *m_button1 = nullptr;
+    QPushButton *m_button2 = nullptr;
 
     void resetRowColor();
     void highlightRow();

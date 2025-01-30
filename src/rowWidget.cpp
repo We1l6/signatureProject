@@ -22,21 +22,21 @@ RowWidget::RowWidget(const int index, const QVector<int> &columnWidths, const in
         connect(edit, &QLineEdit::textEdited, this, &RowWidget::highlightRow);
         connect(edit, &QLineEdit::editingFinished, this, &RowWidget::resetRowColor);
         edit->setMinimumWidth(columnWidths[i]);
-        inputs.push_back(edit);
+        m_inputs.push_back(edit);
         layout->addWidget(edit);
     }
 
-    QPushButton *button1 = new QPushButton("", this);
-    connect(button1, &QPushButton::clicked, this, &RowWidget::button1Pressed);
-    button1->setMinimumWidth(columnWidths[columnWidths.size() - 2]);
-    button1->setFixedHeight(rowHeight+1);
-    layout->addWidget(button1);
+    m_button1 = new QPushButton("", this);
+    connect(m_button1, &QPushButton::clicked, this, &RowWidget::button1Pressed);
+    m_button1->setMinimumWidth(columnWidths[columnWidths.size() - 2]);
+    m_button1->setFixedHeight(rowHeight+1);
+    layout->addWidget(m_button1);
 
-    QPushButton *button2 = new QPushButton("", this);
-    connect(button2, &QPushButton::clicked, this, &RowWidget::button2Pressed);
-    button2->setMinimumWidth(columnWidths[columnWidths.size() - 1]);
-    button2->setFixedHeight(rowHeight+1);
-    layout->addWidget(button2);
+    m_button2 = new QPushButton("", this);
+    connect(m_button2, &QPushButton::clicked, this, &RowWidget::button2Pressed);
+    m_button2->setMinimumWidth(columnWidths[columnWidths.size() - 1]);
+    m_button2->setFixedHeight(rowHeight+1);
+    layout->addWidget(m_button2);
 
     setLayout(layout);
 
@@ -45,15 +45,15 @@ RowWidget::RowWidget(const int index, const QVector<int> &columnWidths, const in
 
 void RowWidget::resetRowColor()
 {
-    for (int column = 0; column < inputs.size(); ++column) {
-        inputs[column]->setStyleSheet("QLineEdit { background-color: white;}");
+    for (int column = 0; column < m_inputs.size(); ++column) {
+        m_inputs[column]->setStyleSheet("QLineEdit { background-color: white;}");
     }
 }
 
 void RowWidget::highlightRow()
 {
-    for (int column = 0; column < inputs.size(); ++column) {
-        inputs[column]->setStyleSheet("QLineEdit { background-color: yellow;}");
+    for (int column = 0; column < m_inputs.size(); ++column) {
+        m_inputs[column]->setStyleSheet("QLineEdit { background-color: yellow;}");
     }
 }
 
