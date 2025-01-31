@@ -4,6 +4,7 @@
 #include<QString>
 #include<QDebug>
 #include <QtSql>
+#include "Queries.h"
 
 class DatabaseManager
 {
@@ -23,6 +24,8 @@ private:
 
     DatabaseManager(const DatabaseManager&) = delete;
     DatabaseManager& operator=(const DatabaseManager&) = delete;
+
+    void createTables();
 };
 
 #endif // DATABASEMANAGER_H

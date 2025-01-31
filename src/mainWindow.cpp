@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     QVector<int> columnWidths = {50, 55, 55, 55, 55, 55, 120, 120};
-    LOG_INFO("sdfsdfsdfsdfsdfs");
     QStringList header1 = {"№ з/п", "Кому видано", "Підрозділ", "Обліковий\nномер", "Кількість\nаркушів",
                            "Дата\nотримання", "Підпис про\nотримання", "Підпис про\nзворотний\nприйом, дата"};
 

@@ -26,6 +26,8 @@ bool DatabaseManager::connect(const QString& dbPath) {
     }
 
     qDebug() << "Database connected successfully!";
+
+    createTables();
     return true;
 }
 
@@ -47,4 +49,12 @@ bool DatabaseManager::executeQuery(const QString& queryStr) {
 
 QSqlDatabase& DatabaseManager::getDatabase() {
     return db;
+}
+
+void DatabaseManager::createTables() {
+    if (!executeQuery(Queries::gridTable)) {
+        qDebug() << "Failed to create table gridTable";
+    } else {
+        qDebug() << "Table gridTable is ready";
+    }
 }
