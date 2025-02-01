@@ -1,9 +1,11 @@
 #ifndef DATABASEMANAGER_H
 #define DATABASEMANAGER_H
 
-#include<QString>
-#include<QDebug>
+#include <QString>
+#include <QDebug>
 #include <QtSql>
+
+#include "../logger/logger.h"
 #include "Queries.h"
 
 class DatabaseManager
