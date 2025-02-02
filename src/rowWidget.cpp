@@ -1,7 +1,8 @@
 #include "rowWidget.h"
 
-RowWidget::RowWidget(const int index, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent) : QWidget(parent) {
+RowWidget::RowWidget(const int index, const int sheetID, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent) : QWidget(parent) {
     m_index = index;
+    m_sheetID = sheetID;
     QString styles = ("QLabel { "
                       "border: 1px solid black;"
                       "font-size: 12px;"
@@ -21,6 +22,7 @@ RowWidget::RowWidget(const int index, const QVector<int> &columnWidths, const in
         QLineEdit *edit = new QLineEdit(this);
         connect(edit, &QLineEdit::textEdited, this, &RowWidget::highlightRow);
         connect(edit, &QLineEdit::editingFinished, this, &RowWidget::resetRowColor);
+        connect(edit, &QLineEdit::editingFinished, this, &RowWidget::editedRow);
         edit->setMinimumWidth(columnWidths[i]);
         m_inputs.push_back(edit);
         layout->addWidget(edit);
@@ -63,4 +65,20 @@ void RowWidget::button1Pressed(){
 
 void RowWidget::button2Pressed(){
 
+}
+
+void RowWidget::editedRow(){
+    DatabaseManager& dbManager = DatabaseManager::instance();
+    Structures::RowData row;
+
+    row.toWhomIssued = m_inputs[0]->text();
+    row.unit = m_inputs[1]->text();
+    row.accountNumber = m_inputs[2]->text();
+    row.numberOfSheets = m_inputs[3]->text().toInt();
+    row.dateOfReceipt = m_inputs[4]->text();
+
+    row.sheetID = m_sheetID;
+    row.rowNumber = m_index;
+
+    dbManager.updateRowData(row);
 }

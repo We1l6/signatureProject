@@ -7,7 +7,6 @@
 #include <QHBoxLayout>
 #include <QVector>
 #include <QVBoxLayout>
-#include <memory>
 
 #define NUMBER_OF_SIGNATURES 2
 

@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include "headerWidget.h"
 #include "rowWidget.h"
+#include "database/databaseManager.h"
+
+#define ROW_COUNT 49
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,5 +25,6 @@ public:
 private:
     Ui::MainWindow *ui;
     QVector<RowWidget*> rows;
+    int m_sheetID = 1;
 };
 #endif // MAINWINDOW_H
