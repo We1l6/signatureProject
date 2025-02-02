@@ -80,3 +80,32 @@ bool DatabaseManager::insertRow(int sheetID, int rowNumber) {
     }
     return true;
 }
+
+bool DatabaseManager::updateRowData(const Structures::RowData& rowData) {
+    QSqlQuery query;
+    query.prepare("UPDATE gridTable SET "
+                  "to_whom_issued = :toWhomIssued, "
+                  "unit = :unit, "
+                  "account_number = :accountNumber, "
+                  "number_of_sheets = :numberOfSheets, "
+                  "date_of_receipt = :dateOfReceipt "
+                  "WHERE sheet_id = :sheetID AND row_number = :rowNumber");
+
+    query.bindValue(":toWhomIssued", rowData.toWhomIssued);
+    query.bindValue(":unit", rowData.unit);
+    query.bindValue(":accountNumber", rowData.accountNumber);
+    query.bindValue(":numberOfSheets", rowData.numberOfSheets);
+    query.bindValue(":dateOfReceipt", rowData.dateOfReceipt);
+    //query.bindValue(":receiptSignature", rowData.receiptSignature);
+    //query.bindValue(":returnSignature", rowData.returnSignature);
+    query.bindValue(":sheetID", rowData.sheetID);
+    query.bindValue(":rowNumber", rowData.rowNumber);
+
+    if (!query.exec()) {
+        qDebug() << "Error updating line:" << query.lastError().text();
+        LOG_WARN("Error updating line:" + query.lastError().text().toStdString());
+        return false;
+    }
+    return true;
+}
+

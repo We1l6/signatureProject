@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     for (int i = 0; i < ROW_COUNT; ++i) {
         dbManager.insertRow(m_sheetID, i+1);
-        RowWidget *row = new RowWidget(i + 1, columnWidths, 20, ui->verticalLayout, this);
+        RowWidget *row = new RowWidget(i + 1, m_sheetID, columnWidths, 20, ui->verticalLayout, this);
         rows.push_back(row);
     }
 
