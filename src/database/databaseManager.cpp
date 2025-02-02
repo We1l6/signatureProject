@@ -65,3 +65,18 @@ void DatabaseManager::createTables() {
         LOG_INFO("Table gridTable is ready");
     }
 }
+
+
+bool DatabaseManager::insertRow(int sheetID, int rowNumber) {
+    QSqlQuery query;
+    query.prepare("INSERT INTO gridTable (sheet_id, row_number) VALUES (:sheetID, :rowNumber)");
+    query.bindValue(":sheetID", sheetID);
+    query.bindValue(":rowNumber", rowNumber);
+
+    if (!query.exec()) {
+        qDebug() << "Error inserting into database:" << query.lastError().text();
+        LOG_WARN("Error inserting into database:" + query.lastError().text().toStdString());
+        return false;
+    }
+    return true;
+}

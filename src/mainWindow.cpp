@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    DatabaseManager::instance().connect("database.db");
     QVector<int> columnWidths = {50, 55, 55, 55, 55, 55, 120, 120};
     QStringList header1 = {"№ з/п", "Кому видано", "Підрозділ", "Обліковий\nномер", "Кількість\nаркушів",
                            "Дата\nотримання", "Підпис про\nотримання", "Підпис про\nзворотний\nприйом, дата"};
@@ -15,9 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     HeaderWidget *header1Widget = new HeaderWidget(header1, columnWidths, 70, ui->verticalLayout, this);
     HeaderWidget *header2Widget = new HeaderWidget(header2, columnWidths, 20, ui->verticalLayout, this);
+    DatabaseManager& dbManager = DatabaseManager::instance();
 
-
-    for (int i = 0; i < 49; ++i) {
+    for (int i = 0; i < ROW_COUNT; ++i) {
+        dbManager.insertRow(m_sheetID, i+1);
         RowWidget *row = new RowWidget(i + 1, columnWidths, 20, ui->verticalLayout, this);
         rows.push_back(row);
     }
@@ -28,5 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    DatabaseManager::instance().disconnect();
     delete ui;
 }

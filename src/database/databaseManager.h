@@ -17,6 +17,7 @@ public:
     void disconnect();
     bool executeQuery(const QString& queryStr);
     QSqlDatabase& getDatabase();
+    bool insertRow(int sheetID, int rowNumber);
 
 private:
     QSqlDatabase db;
