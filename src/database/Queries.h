@@ -6,6 +6,7 @@
 namespace Queries {
     const QString gridTable = ("CREATE TABLE IF NOT EXISTS gridTable ("
                                "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                               "list_id INTEGER PRIMARY KEY NOT NULL, "
                                "to_whom_issued VARCHAR(32), "
                                "unit VARCHAR(32), "
                                "account_number VARCHAR(32), "
