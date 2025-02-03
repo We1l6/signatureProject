@@ -82,3 +82,11 @@ void RowWidget::editedRow(){
 
     dbManager.updateRowData(row);
 }
+
+void RowWidget::setRowData(Structures::RowData rowData){
+    m_inputs[0]->setText(rowData.toWhomIssued);
+    m_inputs[1]->setText(rowData.unit);
+    m_inputs[2]->setText(rowData.accountNumber);
+    m_inputs[3]->setText(QString::number(rowData.numberOfSheets));
+    m_inputs[4]->setText(rowData.dateOfReceipt);
+}
