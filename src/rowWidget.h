@@ -15,6 +15,7 @@ class RowWidget : public QWidget {
 Q_OBJECT
 public:
     explicit RowWidget(const int index, const int sheetID, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent = nullptr);
+    void setRowData(Structures::RowData rowData);
 
 private:
     int m_index = 0;
@@ -24,6 +25,7 @@ private:
     int m_sheetID = 0;
     void resetRowColor();
     void highlightRow();
+
     void editedRow();
 
     void button1Pressed();

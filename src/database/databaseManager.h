@@ -20,6 +20,7 @@ public:
     QSqlDatabase& getDatabase();
     bool insertRow(int sheetID, int rowNumber);
     bool updateRowData(const Structures::RowData& rowData);
+    std::vector<Structures::RowData> fetchRowsBySheetID(int sheetID);
 
 private:
     QSqlDatabase db;

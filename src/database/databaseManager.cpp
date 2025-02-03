@@ -81,6 +81,7 @@ bool DatabaseManager::insertRow(int sheetID, int rowNumber) {
     return true;
 }
 
+
 bool DatabaseManager::updateRowData(const Structures::RowData& rowData) {
     QSqlQuery query;
     query.prepare("UPDATE gridTable SET "
@@ -108,4 +109,37 @@ bool DatabaseManager::updateRowData(const Structures::RowData& rowData) {
     }
     return true;
 }
+
+std::vector<Structures::RowData> DatabaseManager::fetchRowsBySheetID(int sheetID) {
+    std::vector<Structures::RowData> rows;
+    QSqlQuery query;
+
+    query.prepare("SELECT sheet_id, row_number, to_whom_issued, unit, account_number, number_of_sheets, date_of_receipt "
+                  "FROM gridTable WHERE sheet_id = :sheetID");
+    query.bindValue(":sheetID", sheetID);
+
+    if (!query.exec()) {
+        qDebug() << "Error fetching rows:" << query.lastError().text();
+        LOG_WARN("Error fetching rows: " + query.lastError().text().toStdString());
+        return rows;
+    }
+
+    while (query.next()) {
+        Structures::RowData rowData;
+        rowData.sheetID = query.value("sheet_id").toInt();
+        rowData.rowNumber = query.value("row_number").toInt()+1;
+        rowData.toWhomIssued = query.value("to_whom_issued").toString();
+        rowData.unit = query.value("unit").toString();
+        rowData.accountNumber = query.value("account_number").toString();
+        rowData.numberOfSheets = query.value("number_of_sheets").toInt();
+        rowData.dateOfReceipt = query.value("date_of_receipt").toString();
+        // rowData.receiptSignature = query.value("receiptSignature").toString();
+        // rowData.returnSignature = query.value("returnSignature").toString();
+
+        rows.push_back(rowData);
+    }
+
+    return rows;
+}
+
 
