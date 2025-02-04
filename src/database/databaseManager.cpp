@@ -69,7 +69,7 @@ void DatabaseManager::createTables() {
 
 bool DatabaseManager::insertRow(int sheetID, int rowNumber) {
     QSqlQuery query;
-    query.prepare("INSERT INTO gridTable (sheet_id, row_number) VALUES (:sheetID, :rowNumber)");
+    query.prepare(Queries::insertIntoGridTable);
     query.bindValue(":sheetID", sheetID);
     query.bindValue(":rowNumber", rowNumber);
 
@@ -84,13 +84,7 @@ bool DatabaseManager::insertRow(int sheetID, int rowNumber) {
 
 bool DatabaseManager::updateRowData(const Structures::RowData& rowData) {
     QSqlQuery query;
-    query.prepare("UPDATE gridTable SET "
-                  "to_whom_issued = :toWhomIssued, "
-                  "unit = :unit, "
-                  "account_number = :accountNumber, "
-                  "number_of_sheets = :numberOfSheets, "
-                  "date_of_receipt = :dateOfReceipt "
-                  "WHERE sheet_id = :sheetID AND row_number = :rowNumber");
+    query.prepare(Queries::updategridTable);
 
     query.bindValue(":toWhomIssued", rowData.toWhomIssued);
     query.bindValue(":unit", rowData.unit);
@@ -114,8 +108,7 @@ std::vector<Structures::RowData> DatabaseManager::fetchRowsBySheetID(int sheetID
     std::vector<Structures::RowData> rows;
     QSqlQuery query;
 
-    query.prepare("SELECT sheet_id, row_number, to_whom_issued, unit, account_number, number_of_sheets, date_of_receipt "
-                  "FROM gridTable WHERE sheet_id = :sheetID");
+    query.prepare(Queries::selectFromGridTable);
     query.bindValue(":sheetID", sheetID);
 
     if (!query.exec()) {
