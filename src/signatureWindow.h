@@ -2,7 +2,8 @@
 #define SIGNATUREWINDOW_H
 
 #include <QDialog>
-
+#include <QTimer>
+#include <QKeyEvent>
 namespace Ui {
 class SignatureWindow;
 }
@@ -17,6 +18,12 @@ public:
 
 private:
     Ui::SignatureWindow *ui;
+    QImage image;
+    QPoint lastPoint;
+    bool drawing;
+    QTimer *cursorTimer = nullptr;
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 };
 
 #endif // SIGNATUREWINDOW_H

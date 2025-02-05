@@ -1,6 +1,8 @@
 #include "rowWidget.h"
 
-RowWidget::RowWidget(const int index, const int sheetID, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent) : QWidget(parent) {
+RowWidget::RowWidget(const int index, const int sheetID, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent)
+    : QWidget(parent)
+{
     m_index = index;
     m_sheetID = sheetID;
     QString styles = ("QLabel { "
@@ -60,27 +62,28 @@ void RowWidget::highlightRow()
 }
 
 void RowWidget::button1Pressed(){
-
+    signatureWindow = new SignatureWindow();
+    signatureWindow->show();
 }
 
 void RowWidget::button2Pressed(){
-
+    signatureWindow = new SignatureWindow();
+    signatureWindow->show();
 }
 
 void RowWidget::editedRow(){
     DatabaseManager& dbManager = DatabaseManager::instance();
-    Structures::RowData row;
 
-    row.toWhomIssued = m_inputs[0]->text();
-    row.unit = m_inputs[1]->text();
-    row.accountNumber = m_inputs[2]->text();
-    row.numberOfSheets = m_inputs[3]->text().toInt();
-    row.dateOfReceipt = m_inputs[4]->text();
+    m_rowData.toWhomIssued = m_inputs[0]->text();
+    m_rowData.unit = m_inputs[1]->text();
+    m_rowData.accountNumber = m_inputs[2]->text();
+    m_rowData.numberOfSheets = m_inputs[3]->text().toInt();
+    m_rowData.dateOfReceipt = m_inputs[4]->text();
 
-    row.sheetID = m_sheetID;
-    row.rowNumber = m_index;
+    m_rowData.sheetID = m_sheetID;
+    m_rowData.rowNumber = m_index;
 
-    dbManager.updateRowData(row);
+    dbManager.updateRowData(m_rowData);
 }
 
 void RowWidget::setRowData(Structures::RowData rowData){
@@ -89,4 +92,8 @@ void RowWidget::setRowData(Structures::RowData rowData){
     m_inputs[2]->setText(rowData.accountNumber);
     m_inputs[3]->setText(QString::number(rowData.numberOfSheets));
     m_inputs[4]->setText(rowData.dateOfReceipt);
+}
+
+Structures::RowData RowWidget::getRowData(){
+    return m_rowData;
 }
