@@ -35,6 +35,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/database/databaseManager.h src/database/databaseManager.cpp src/database/Queries.h
         src/logger/logger.h src/logger/logger.cpp
         src/structures/rowData.h
+        src/signatureWindow.h src/signatureWindow.cpp src/signatureWindow.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET signatureProject APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
