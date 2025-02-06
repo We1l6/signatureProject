@@ -1,7 +1,10 @@
 #include "rowWidget.h"
 
-RowWidget::RowWidget(const int index, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent) : QWidget(parent) {
+RowWidget::RowWidget(const int index, const int sheetID, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent)
+    : QWidget(parent)
+{
     m_index = index;
+    m_sheetID = sheetID;
     QString styles = ("QLabel { "
                       "border: 1px solid black;"
                       "font-size: 12px;"
@@ -21,6 +24,7 @@ RowWidget::RowWidget(const int index, const QVector<int> &columnWidths, const in
         QLineEdit *edit = new QLineEdit(this);
         connect(edit, &QLineEdit::textEdited, this, &RowWidget::highlightRow);
         connect(edit, &QLineEdit::editingFinished, this, &RowWidget::resetRowColor);
+        connect(edit, &QLineEdit::editingFinished, this, &RowWidget::editedRow);
         edit->setMinimumWidth(columnWidths[i]);
         m_inputs.push_back(edit);
         layout->addWidget(edit);
@@ -58,9 +62,38 @@ void RowWidget::highlightRow()
 }
 
 void RowWidget::button1Pressed(){
-
+    signatureWindow = new SignatureWindow();
+    signatureWindow->show();
 }
 
 void RowWidget::button2Pressed(){
+    signatureWindow = new SignatureWindow();
+    signatureWindow->show();
+}
 
+void RowWidget::editedRow(){
+    DatabaseManager& dbManager = DatabaseManager::instance();
+
+    m_rowData.toWhomIssued = m_inputs[0]->text();
+    m_rowData.unit = m_inputs[1]->text();
+    m_rowData.accountNumber = m_inputs[2]->text();
+    m_rowData.numberOfSheets = m_inputs[3]->text().toInt();
+    m_rowData.dateOfReceipt = m_inputs[4]->text();
+
+    m_rowData.sheetID = m_sheetID;
+    m_rowData.rowNumber = m_index;
+
+    dbManager.updateRowData(m_rowData);
+}
+
+void RowWidget::setRowData(Structures::RowData rowData){
+    m_inputs[0]->setText(rowData.toWhomIssued);
+    m_inputs[1]->setText(rowData.unit);
+    m_inputs[2]->setText(rowData.accountNumber);
+    m_inputs[3]->setText(QString::number(rowData.numberOfSheets));
+    m_inputs[4]->setText(rowData.dateOfReceipt);
+}
+
+Structures::RowData RowWidget::getRowData(){
+    return m_rowData;
 }
