@@ -3,6 +3,7 @@
 
 #include <QImage>
 #include <QString>
+#include <QDebug>
 
 class SignatureSaver
 {

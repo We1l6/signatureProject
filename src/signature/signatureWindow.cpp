@@ -30,8 +30,17 @@ void SignatureWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 void SignatureWindow::closeEvent(QCloseEvent *event) {
-    canvas->getImage().save(QCoreApplication::applicationDirPath() + "/signs/drawing.png");
+    QImage img = canvas->getImage();
+
+    SignatureSaver saver;
+    if (saver.saveImage(img, QCoreApplication::applicationDirPath() + "/signs/drawing.png")) {
+        qDebug() << "Image saved successfully!";
+    } else {
+        qDebug() << "Failed to save image!";
+    }
+
     cursorTimer->stop();
     event->accept();
 }
+
 
