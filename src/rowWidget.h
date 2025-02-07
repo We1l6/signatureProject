@@ -10,7 +10,7 @@
 
 #include "structures/rowData.h"
 #include "database/databaseManager.h"
-#include "signatureWindow.h"
+#include "signature/signatureWindow.h"
 
 class RowWidget : public QWidget {
 Q_OBJECT
