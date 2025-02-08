@@ -20,7 +20,8 @@ public:
     Structures::RowData getRowData();
 
 private:
-    SignatureWindow *signatureWindow = nullptr;
+    SignatureWindow *signatureWindow1 = nullptr;
+    SignatureWindow *signatureWindow2 = nullptr;
     int m_index = 0;
     QVector<QLineEdit*> m_inputs;
     QPushButton *m_button1 = nullptr;
@@ -35,5 +36,7 @@ private:
 
     void button1Pressed();
     void button2Pressed();
+public slots:
+    void onSignatureSaved(int signatureID, QByteArray imgBit);
 };
 #endif // ROWWIDGET_H

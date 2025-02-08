@@ -62,13 +62,15 @@ void RowWidget::highlightRow()
 }
 
 void RowWidget::button1Pressed(){
-    signatureWindow = new SignatureWindow();
-    signatureWindow->show();
+    signatureWindow1 = new SignatureWindow(1);
+    connect(signatureWindow1, &SignatureWindow::signatureSaved, this, &RowWidget::onSignatureSaved);
+    signatureWindow1->show();
 }
 
 void RowWidget::button2Pressed(){
-    signatureWindow = new SignatureWindow();
-    signatureWindow->show();
+    signatureWindow2 = new SignatureWindow(2);
+    connect(signatureWindow2, &SignatureWindow::signatureSaved, this, &RowWidget::onSignatureSaved);
+    signatureWindow2->show();
 }
 
 void RowWidget::editedRow(){
@@ -96,4 +98,16 @@ void RowWidget::setRowData(Structures::RowData rowData){
 
 Structures::RowData RowWidget::getRowData(){
     return m_rowData;
+}
+
+void RowWidget::onSignatureSaved(int signatureID, QByteArray imgBit){
+    DatabaseManager& dbManager = DatabaseManager::instance();
+    if(signatureID == 1){
+        m_rowData.firstSign = imgBit;
+        dbManager.updateRowData(m_rowData);
+    }
+    else{
+        m_rowData.secondSign = imgBit;
+        dbManager.updateRowData(m_rowData);
+    }
 }

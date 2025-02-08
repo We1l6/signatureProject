@@ -17,12 +17,12 @@ MainWindow::MainWindow(QWidget *parent)
     HeaderWidget *header1Widget = new HeaderWidget(header1, columnWidths, 70, ui->verticalLayout, this);
     HeaderWidget *header2Widget = new HeaderWidget(header2, columnWidths, 20, ui->verticalLayout, this);
     DatabaseManager& dbManager = DatabaseManager::instance();
-    std::vector<Structures::RowData> rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
+    //std::vector<Structures::RowData> rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
 
     for (int i = 0; i < ROW_COUNT; ++i) {
-        //dbManager.insertRow(m_sheetID, i+1);
+        dbManager.insertRow(m_sheetID, i+1);
         RowWidget *row = new RowWidget(i + 1, m_sheetID, columnWidths, 20, ui->verticalLayout, this);
-        row->setRowData(rowsData[i]);
+        //row->setRowData(rowsData[i]);
         rows.push_back(row);
     }
 
