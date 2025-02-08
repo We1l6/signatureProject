@@ -3,12 +3,14 @@
 
 #include <QImage>
 #include <QString>
+#include <QDebug>
+#include <QBuffer>
 
 class SignatureSaver
 {
 public:
     SignatureSaver();
-    static bool saveImage(const QImage &image, const QString &filePath);
+    static QByteArray saveImage(QImage &image, const QString &filePath);
 };
 
 #endif // SIGNATURESAVER_H
