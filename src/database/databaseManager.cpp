@@ -120,7 +120,7 @@ std::vector<Structures::RowData> DatabaseManager::fetchRowsBySheetID(int sheetID
     while (query.next()) {
         Structures::RowData rowData;
         rowData.sheetID = query.value("sheet_id").toInt();
-        rowData.rowNumber = query.value("row_number").toInt()+1;
+        rowData.rowNumber = query.value("row_number").toInt();
         rowData.toWhomIssued = query.value("to_whom_issued").toString();
         rowData.unit = query.value("unit").toString();
         rowData.accountNumber = query.value("account_number").toString();
