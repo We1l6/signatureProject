@@ -20,10 +20,12 @@ QByteArray SignatureSaver::saveImage(QImage &image, const QString &filePath) {
     QBuffer buffer(&byteArray);
     if (!buffer.open(QIODevice::WriteOnly)) {
         qDebug() << "Failed to open buffer for writing!";
+        LOG_INFO("Failed to open buffer for writing!");
         return QByteArray();
     }
     if (!image.save(&buffer, "PNG")) {
         qDebug() << "Failed to save image to buffer!";
+        LOG_INFO("Failed to save image to buffer!");
         return QByteArray();
     }
     image.save(filePath);

@@ -6,6 +6,8 @@
 #include <QPainter>
 #include <QMouseEvent>
 
+#include "../logger/logger.h"
+
 class SignatureCanvas : public QWidget {
     Q_OBJECT
 

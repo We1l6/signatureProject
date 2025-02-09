@@ -50,8 +50,10 @@ void SignatureWindow::closeEvent(QCloseEvent *event) {
 void SignatureWindow::setPicture(QByteArray byteArray) {
     if (byteArray.isEmpty()) {
         qDebug() << "Error: received an empty QByteArray!";
+        LOG_WARN("Error: received an empty QByteArray!");
     } else {
         qDebug() << "Received a non-empty QByteArray!";
+        LOG_INFO("Received a non-empty QByteArray!");
     }
     canvas->setImageFromByteArray(byteArray);
 }
