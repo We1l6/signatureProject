@@ -37,6 +37,7 @@ void SignatureWindow::closeEvent(QCloseEvent *event) {
     if (!imgBit.isEmpty()) {
         qDebug() << "Image saved successfully!";
         LOG_INFO("Image saved successfully!");
+        m_byteArray = imgBit;
         emit signatureSaved(m_signatureButtonID, imgBit);
     } else {
         qDebug() << "Failed to save image!";
@@ -44,4 +45,15 @@ void SignatureWindow::closeEvent(QCloseEvent *event) {
     }
     cursorTimer->stop();
     event->accept();
+}
+
+void SignatureWindow::setPicture(QByteArray byteArray) {
+    if (byteArray.isEmpty()) {
+        qDebug() << "Error: received an empty QByteArray!";
+        LOG_WARN("Error: received an empty QByteArray!");
+    } else {
+        qDebug() << "Received a non-empty QByteArray!";
+        LOG_INFO("Received a non-empty QByteArray!");
+    }
+    canvas->setImageFromByteArray(byteArray);
 }

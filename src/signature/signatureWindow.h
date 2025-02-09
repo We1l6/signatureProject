@@ -22,6 +22,7 @@ class SignatureWindow : public QDialog {
 public:
     explicit SignatureWindow(int signatureButtonID, QWidget *parent = nullptr);
     ~SignatureWindow();
+    void setPicture(QByteArray byteArray);
 signals:
     void signatureSaved(int signatureID, QByteArray imgBit);
 
@@ -29,6 +30,7 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
 private:
+    QByteArray m_byteArray = 0;
     int m_signatureButtonID;
     Ui::SignatureWindow *ui;
     SignatureCanvas *canvas;

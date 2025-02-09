@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <QBuffer>
 
+#include "../logger/logger.h"
+
 class SignatureSaver
 {
 public:
