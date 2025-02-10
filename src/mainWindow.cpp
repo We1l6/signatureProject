@@ -20,8 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     std::vector<Structures::RowData> rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
 
     for (int i = 0; i < ROW_COUNT; ++i) {
-        //dbManager.insertRow(m_sheetID, i+1);
-        RowWidget *row = new RowWidget(i + 1, m_sheetID, columnWidths, 20, ui->verticalLayout, this);
+        //dbManager.insertRow(m_sheetID, i);
+        RowWidget *row = new RowWidget(i, m_sheetID, columnWidths, 20, ui->verticalLayout, this);
         row->setRowData(rowsData[i]);
         rows.push_back(row);
     }

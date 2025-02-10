@@ -22,12 +22,14 @@ namespace Queries {
                             "unit = :unit, "
                             "account_number = :accountNumber, "
                             "number_of_sheets = :numberOfSheets, "
-                            "date_of_receipt = :dateOfReceipt "
+                            "date_of_receipt = :dateOfReceipt, "
+                            "receipt_signature = :firstSign, "
+                            "return_signature = :secondSign "
                             "WHERE sheet_id = :sheetID AND row_number = :rowNumber");
 
     const QString insertIntoGridTable = ("INSERT INTO gridTable (sheet_id, row_number) VALUES (:sheetID, :rowNumber)");
 
-    const QString selectFromGridTable = ("SELECT sheet_id, row_number, to_whom_issued, unit, account_number, number_of_sheets, date_of_receipt "
+    const QString selectFromGridTable = ("SELECT sheet_id, row_number, to_whom_issued, unit, account_number, number_of_sheets, date_of_receipt, receipt_signature, return_signature "
                                          "FROM gridTable WHERE sheet_id = :sheetID");
 }
 

@@ -1,6 +1,8 @@
 #include "rowWidget.h"
 
-RowWidget::RowWidget(const int index, const int sheetID, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent) : QWidget(parent) {
+RowWidget::RowWidget(const int index, const int sheetID, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent)
+    : QWidget(parent)
+{
     m_index = index;
     m_sheetID = sheetID;
     QString styles = ("QLabel { "
@@ -8,11 +10,20 @@ RowWidget::RowWidget(const int index, const int sheetID, const QVector<int> &col
                       "font-size: 12px;"
                       "}");
 
+    m_rowData.toWhomIssued = "";
+    m_rowData.unit = "";
+    m_rowData.accountNumber = "";
+    m_rowData.numberOfSheets = 0;
+    m_rowData.dateOfReceipt = "";
+
+    m_rowData.sheetID = m_sheetID;
+    m_rowData.rowNumber = m_index;
+
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    QLabel *label = new QLabel(QString::number(index), this);
+    QLabel *label = new QLabel(QString::number(index+1), this);
     label->setMinimumWidth(columnWidths[0]);
     label->setStyleSheet(styles);
     label->setAlignment(Qt::AlignCenter);
@@ -60,27 +71,37 @@ void RowWidget::highlightRow()
 }
 
 void RowWidget::button1Pressed(){
+    signatureWindow1 = new SignatureWindow(1);
+    connect(signatureWindow1, &SignatureWindow::signatureSaved, this, &RowWidget::onSignatureSaved);
 
+    if(!m_rowData.firstSign.isEmpty()){
+        signatureWindow1->setPicture(m_rowData.firstSign);
+    }
+    signatureWindow1->show();
 }
 
 void RowWidget::button2Pressed(){
-
+    signatureWindow2 = new SignatureWindow(2);
+    connect(signatureWindow2, &SignatureWindow::signatureSaved, this, &RowWidget::onSignatureSaved);
+    if(!m_rowData.firstSign.isEmpty()){
+        signatureWindow2->setPicture(m_rowData.secondSign);
+    }
+    signatureWindow2->show();
 }
 
 void RowWidget::editedRow(){
     DatabaseManager& dbManager = DatabaseManager::instance();
-    Structures::RowData row;
 
-    row.toWhomIssued = m_inputs[0]->text();
-    row.unit = m_inputs[1]->text();
-    row.accountNumber = m_inputs[2]->text();
-    row.numberOfSheets = m_inputs[3]->text().toInt();
-    row.dateOfReceipt = m_inputs[4]->text();
+    m_rowData.toWhomIssued = m_inputs[0]->text();
+    m_rowData.unit = m_inputs[1]->text();
+    m_rowData.accountNumber = m_inputs[2]->text();
+    m_rowData.numberOfSheets = m_inputs[3]->text().toInt();
+    m_rowData.dateOfReceipt = m_inputs[4]->text();
 
-    row.sheetID = m_sheetID;
-    row.rowNumber = m_index;
+    m_rowData.sheetID = m_sheetID;
+    m_rowData.rowNumber = m_index;
 
-    dbManager.updateRowData(row);
+    dbManager.updateRowData(m_rowData);
 }
 
 void RowWidget::setRowData(Structures::RowData rowData){
@@ -89,4 +110,31 @@ void RowWidget::setRowData(Structures::RowData rowData){
     m_inputs[2]->setText(rowData.accountNumber);
     m_inputs[3]->setText(QString::number(rowData.numberOfSheets));
     m_inputs[4]->setText(rowData.dateOfReceipt);
+
+    m_rowData = rowData;
+
+    if(!rowData.firstSign.isEmpty()){
+        m_button1->setStyleSheet("QPushButton { background-color: red;}");
+    }
+    if(!rowData.secondSign.isEmpty()){
+        m_button2->setStyleSheet("QPushButton { background-color: red;}");
+    }
+}
+
+Structures::RowData RowWidget::getRowData(){
+    return m_rowData;
+}
+
+void RowWidget::onSignatureSaved(int signatureID, QByteArray imgBit){
+    DatabaseManager& dbManager = DatabaseManager::instance();
+    if(signatureID == 1){
+        m_rowData.firstSign = imgBit;
+        dbManager.updateRowData(m_rowData);
+        m_button1->setStyleSheet("QPushButton { background-color: red;}");
+    }
+    else{
+        m_rowData.secondSign = imgBit;
+        dbManager.updateRowData(m_rowData);
+        m_button2->setStyleSheet("QPushButton { background-color: red;}");
+    }
 }
