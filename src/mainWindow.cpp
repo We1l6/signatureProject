@@ -7,10 +7,25 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ConfigManager config("config.yaml");
+    if (!config.loadConfig())
+    {
+        qWarning() << "Failed to load config!";
+    }
     DatabaseManager::instance().connect("database.db");
+
     QVector<int> columnWidths = {50, 55, 55, 55, 55, 55, 120, 120};
-    QStringList header1 = {"№ з/п", "Кому видано", "Підрозділ", "Обліковий\nномер", "Кількість\nаркушів",
-                           "Дата\nотримання", "Підпис про\nотримання", "Підпис про\nзворотний\nприйом, дата"};
+    QStringList header1;
+
+    header1.push_back(config.getQStringValue("firstColumn", ""));
+    header1.push_back(config.getQStringValue("secondColumn", ""));
+    header1.push_back(config.getQStringValue("thirdColumn", ""));
+    header1.push_back(config.getQStringValue("fourthColumn", ""));
+    header1.push_back(config.getQStringValue("fifthColumn", ""));
+    header1.push_back(config.getQStringValue("sixthColumn", ""));
+    header1.push_back(config.getQStringValue("seventhColumn", ""));
+    header1.push_back(config.getQStringValue("eighthColumn", ""));
 
     QStringList header2 = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
