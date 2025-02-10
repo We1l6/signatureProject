@@ -25,6 +25,7 @@ include(AddGitSubmodule)
 
 add_git_submodule("${PROJECT_SOURCE_DIR}/external/Catch2")
 add_git_submodule("${PROJECT_SOURCE_DIR}/external/spdlog")
+add_git_submodule("${PROJECT_SOURCE_DIR}/external/yaml-cpp")
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(signatureProject
@@ -57,7 +58,8 @@ endif()
 target_link_libraries(signatureProject PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 #target_link_libraries(signatureProject PUBLIC Catch2::Catch2WithMain)
 target_link_libraries(signatureProject PRIVATE spdlog::spdlog)
-    target_link_libraries(signatureProject PRIVATE Qt6::Sql)
+target_link_libraries(signatureProject PRIVATE Qt6::Sql)
+target_link_libraries(signatureProject PRIVATE yaml-cpp::yaml-cpp)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
