@@ -50,3 +50,18 @@ void SignatureCanvas::clear() {
     image.fill(Qt::white);
     update();
 }
+
+
+void SignatureCanvas::setImageFromByteArray(const QByteArray &byteArray) {
+    if (!byteArray.isEmpty()) {
+        if (!image.loadFromData(byteArray, "PNG")) {
+            qDebug() << "Error loading image from QByteArray!";
+            LOG_INFO("Error loading image from QByteArray!");
+        }
+        update();
+    } else {
+        qDebug() << "Received an empty QByteArray!";
+        LOG_INFO("Received an empty QByteArray!");
+    }
+}
+

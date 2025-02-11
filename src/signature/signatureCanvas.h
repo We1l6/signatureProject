@@ -6,6 +6,8 @@
 #include <QPainter>
 #include <QMouseEvent>
 
+#include "../logger/logger.h"
+
 class SignatureCanvas : public QWidget {
     Q_OBJECT
 
@@ -13,7 +15,7 @@ public:
     explicit SignatureCanvas(QWidget *parent = nullptr);
     void clear();
     QImage getImage() const { return image; }
-
+    void setImageFromByteArray(const QByteArray &byteArray);
 protected:
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;

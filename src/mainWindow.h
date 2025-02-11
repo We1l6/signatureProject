@@ -2,9 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
 #include "headerWidget.h"
 #include "rowWidget.h"
 #include "database/databaseManager.h"
+#include "config/configManager.h"
 
 #define ROW_COUNT 49
 

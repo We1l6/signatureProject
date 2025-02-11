@@ -91,8 +91,8 @@ bool DatabaseManager::updateRowData(const Structures::RowData& rowData) {
     query.bindValue(":accountNumber", rowData.accountNumber);
     query.bindValue(":numberOfSheets", rowData.numberOfSheets);
     query.bindValue(":dateOfReceipt", rowData.dateOfReceipt);
-    //query.bindValue(":receiptSignature", rowData.receiptSignature);
-    //query.bindValue(":returnSignature", rowData.returnSignature);
+    query.bindValue(":firstSign", rowData.firstSign);
+    query.bindValue(":secondSign", rowData.secondSign);
     query.bindValue(":sheetID", rowData.sheetID);
     query.bindValue(":rowNumber", rowData.rowNumber);
 
@@ -120,14 +120,14 @@ std::vector<Structures::RowData> DatabaseManager::fetchRowsBySheetID(int sheetID
     while (query.next()) {
         Structures::RowData rowData;
         rowData.sheetID = query.value("sheet_id").toInt();
-        rowData.rowNumber = query.value("row_number").toInt()+1;
+        rowData.rowNumber = query.value("row_number").toInt();
         rowData.toWhomIssued = query.value("to_whom_issued").toString();
         rowData.unit = query.value("unit").toString();
         rowData.accountNumber = query.value("account_number").toString();
         rowData.numberOfSheets = query.value("number_of_sheets").toInt();
         rowData.dateOfReceipt = query.value("date_of_receipt").toString();
-        // rowData.receiptSignature = query.value("receiptSignature").toString();
-        // rowData.returnSignature = query.value("returnSignature").toString();
+        rowData.firstSign = query.value("receipt_signature").toByteArray();
+        rowData.secondSign = query.value("return_signature").toByteArray();
 
         rows.push_back(rowData);
     }

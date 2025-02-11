@@ -11,6 +11,8 @@ namespace Structures {
         QString accountNumber;
         int numberOfSheets;
         QString dateOfReceipt;
+        QByteArray firstSign = NULL;
+        QByteArray secondSign = NULL;
     };
 }
 
