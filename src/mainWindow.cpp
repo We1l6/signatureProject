@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    toolBar = new ToolBarManager(this);
+    addToolBar(Qt::TopToolBarArea, toolBar);
     ConfigManager config("config.yaml");
     if (!config.loadConfig())
     {
@@ -43,10 +44,25 @@ MainWindow::MainWindow(QWidget *parent)
 
     QSpacerItem* spacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
     ui->verticalLayout->addItem(spacer);
+
+    connect(toolBar, &ToolBarManager::leftArrowActionRequested, this, &MainWindow::leftArrowActionRequested);
+    connect(toolBar, &ToolBarManager::rightArrowActionRequested, this, &MainWindow::rightArrowActionRequested);
+
 }
 
 MainWindow::~MainWindow()
 {
     DatabaseManager::instance().disconnect();
+    delete toolBar;
     delete ui;
 }
+
+void MainWindow::leftArrowActionRequested(){
+
+}
+
+void MainWindow::rightArrowActionRequested(){
+
+}
+
+
