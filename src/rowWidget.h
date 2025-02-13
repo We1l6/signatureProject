@@ -18,6 +18,8 @@ public:
     explicit RowWidget(const int index, const int sheetID, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent = nullptr);
     void setRowData(Structures::RowData rowData);
     Structures::RowData getRowData();
+    void clearRow();
+    void setSheetID(int sheetID);
 
 private:
     SignatureWindow *signatureWindow1 = nullptr;

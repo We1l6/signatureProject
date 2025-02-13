@@ -67,6 +67,12 @@ void MainWindow::rightArrowActionRequested(){
 }
 
 void MainWindow::newListActionRequested(){
-    qDebug()<<"newListActionRequested";
+    DatabaseManager& dbManager = DatabaseManager::instance();
+    m_sheetID++;
+    for (int i = 0; i < ROW_COUNT; ++i) {
+        dbManager.insertRow(m_sheetID, i);
+        rows[i]->clearRow();
+        rows[i]->setSheetID(m_sheetID);
+    }
 }
 
