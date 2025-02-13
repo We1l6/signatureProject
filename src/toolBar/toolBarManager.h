@@ -11,10 +11,12 @@ public:
 signals:
     void leftArrowActionRequested();
     void rightArrowActionRequested();
+    void newListActionRequested();
 
 private slots:
     void leftArrowActionTriggered();
     void rightArrowActionTriggered();
+    void newListActionTriggered();
 };
 
 #endif // TOOLBARMANAGER_H
