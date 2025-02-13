@@ -11,8 +11,14 @@ ToolBarManager::ToolBarManager(QWidget *parent) : QToolBar(parent) {
     rightArrow->setShortcut(QKeySequence::Open);
     connect(rightArrow, &QAction::triggered, this, &ToolBarManager::rightArrowActionTriggered);
 
+    QAction *newList = new QAction(QIcon(""), tr("Новий лист"), this);
+    newList->setShortcut(QKeySequence::Open);
+    connect(newList, &QAction::triggered, this, &ToolBarManager::newListActionTriggered);
+
+
     addAction(leftArrow);
     addAction(rightArrow);
+    addAction(newList);
 }
 
 void ToolBarManager::leftArrowActionTriggered()
@@ -24,3 +30,9 @@ void ToolBarManager::rightArrowActionTriggered()
 {
     emit rightArrowActionRequested();
 }
+
+void ToolBarManager::newListActionTriggered()
+{
+    emit newListActionRequested();
+}
+

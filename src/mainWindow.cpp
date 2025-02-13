@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(toolBar, &ToolBarManager::leftArrowActionRequested, this, &MainWindow::leftArrowActionRequested);
     connect(toolBar, &ToolBarManager::rightArrowActionRequested, this, &MainWindow::rightArrowActionRequested);
+    connect(toolBar, &ToolBarManager::newListActionRequested, this, &MainWindow::newListActionRequested);
 
 }
 
@@ -58,11 +59,14 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::leftArrowActionRequested(){
-
+    qDebug()<<"left";
 }
 
 void MainWindow::rightArrowActionRequested(){
-
+    qDebug()<<"right";
 }
 
+void MainWindow::newListActionRequested(){
+    qDebug()<<"newListActionRequested";
+}
 

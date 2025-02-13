@@ -29,6 +29,7 @@ private:
 
     void rightArrowActionRequested();
     void leftArrowActionRequested();
+    void newListActionRequested();
 
     Ui::MainWindow *ui;
     QVector<RowWidget*> rows;
