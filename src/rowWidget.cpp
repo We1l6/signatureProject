@@ -116,8 +116,14 @@ void RowWidget::setRowData(Structures::RowData rowData){
     if(!rowData.firstSign.isEmpty()){
         m_button1->setStyleSheet("QPushButton { background-color: red;}");
     }
+    else{
+        m_button1->setStyleSheet("QPushButton { background-color: white;}");
+    }
     if(!rowData.secondSign.isEmpty()){
         m_button2->setStyleSheet("QPushButton { background-color: red;}");
+    }
+    else{
+        m_button2->setStyleSheet("QPushButton { background-color: white;}");
     }
 }
 
