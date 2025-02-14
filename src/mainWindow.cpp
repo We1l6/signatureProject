@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
         qWarning() << "Failed to load config!";
     }
     DatabaseManager::instance().connect("database.db");
-
     QVector<int> columnWidths = {50, 55, 55, 55, 55, 55, 120, 120};
     QStringList header1;
 
@@ -33,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent)
     HeaderWidget *header1Widget = new HeaderWidget(header1, columnWidths, 70, ui->verticalLayout, this);
     HeaderWidget *header2Widget = new HeaderWidget(header2, columnWidths, 20, ui->verticalLayout, this);
     DatabaseManager& dbManager = DatabaseManager::instance();
+    m_sheetID = dbManager.getMaxSheetID();
+    m_maxSheetID = m_sheetID;
+
+    setWindowTitle(QString::number(m_sheetID));
     std::vector<Structures::RowData> rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
 
     for (int i = 0; i < ROW_COUNT; ++i) {
@@ -59,14 +62,42 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::leftArrowActionRequested(){
-    qDebug()<<"left";
+    if(m_sheetID != 1){
+        DatabaseManager& dbManager = DatabaseManager::instance();
+        m_sheetID--;
+        setWindowTitle(QString::number(m_sheetID));
+        std::vector<Structures::RowData> rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
+
+        for (int i = 0; i < ROW_COUNT; ++i) {
+            rows[i]->clearRow();
+            rows[i]->setRowData(rowsData[i]);
+        }
+    }
 }
 
 void MainWindow::rightArrowActionRequested(){
-    qDebug()<<"right";
+    if(m_sheetID != m_maxSheetID){
+        DatabaseManager& dbManager = DatabaseManager::instance();
+        m_sheetID++;
+        setWindowTitle(QString::number(m_sheetID));
+        std::vector<Structures::RowData> rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
+
+        for (int i = 0; i < ROW_COUNT; ++i) {
+            rows[i]->clearRow();
+            rows[i]->setRowData(rowsData[i]);
+        }
+    }
 }
 
 void MainWindow::newListActionRequested(){
-    qDebug()<<"newListActionRequested";
+    DatabaseManager& dbManager = DatabaseManager::instance();
+    m_sheetID++;
+    setWindowTitle(QString::number(m_sheetID));
+    m_maxSheetID = m_sheetID;
+    for (int i = 0; i < ROW_COUNT; ++i) {
+        dbManager.insertRow(m_sheetID, i);
+        rows[i]->clearRow();
+        rows[i]->setSheetID(m_sheetID);
+    }
 }
 

@@ -135,4 +135,14 @@ std::vector<Structures::RowData> DatabaseManager::fetchRowsBySheetID(int sheetID
     return rows;
 }
 
+int DatabaseManager::getMaxSheetID(){
+    QSqlQuery query;
+    if (query.exec("SELECT MAX(sheet_id) FROM gridTable")) {
+        if (query.next()) {
+            return query.value(0).toInt();
+        }
+    }
+
+    return -1;
+}
 

@@ -98,8 +98,8 @@ void RowWidget::editedRow(){
     m_rowData.numberOfSheets = m_inputs[3]->text().toInt();
     m_rowData.dateOfReceipt = m_inputs[4]->text();
 
-    m_rowData.sheetID = m_sheetID;
-    m_rowData.rowNumber = m_index;
+    //m_rowData.sheetID = m_sheetID;
+    //m_rowData.rowNumber = m_index;
 
     dbManager.updateRowData(m_rowData);
 }
@@ -116,8 +116,14 @@ void RowWidget::setRowData(Structures::RowData rowData){
     if(!rowData.firstSign.isEmpty()){
         m_button1->setStyleSheet("QPushButton { background-color: red;}");
     }
+    else{
+        m_button1->setStyleSheet("QPushButton { background-color: white;}");
+    }
     if(!rowData.secondSign.isEmpty()){
         m_button2->setStyleSheet("QPushButton { background-color: red;}");
+    }
+    else{
+        m_button2->setStyleSheet("QPushButton { background-color: white;}");
     }
 }
 
@@ -137,4 +143,27 @@ void RowWidget::onSignatureSaved(int signatureID, QByteArray imgBit){
         dbManager.updateRowData(m_rowData);
         m_button2->setStyleSheet("QPushButton { background-color: red;}");
     }
+}
+
+void RowWidget::clearRow(){
+    m_rowData.toWhomIssued = "";
+    m_rowData.unit = "";
+    m_rowData.accountNumber = "";
+    m_rowData.numberOfSheets = 0;
+    m_rowData.dateOfReceipt = "";
+
+
+    setRowData(m_rowData);
+}
+
+void RowWidget::setSheetID(int sheetID){
+    m_rowData.sheetID = sheetID;
+    m_sheetID = sheetID;
+
+    m_button1->setStyleSheet("QPushButton { background-color: white;}");
+    m_button2->setStyleSheet("QPushButton { background-color: white;}");
+    m_rowData.firstSign.clear();
+    m_rowData.secondSign.clear();
+    SignatureWindow *signatureWindow1 = nullptr;
+    SignatureWindow *signatureWindow2 = nullptr;
 }

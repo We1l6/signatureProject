@@ -21,7 +21,7 @@ public:
     bool insertRow(int sheetID, int rowNumber);
     bool updateRowData(const Structures::RowData& rowData);
     std::vector<Structures::RowData> fetchRowsBySheetID(int sheetID);
-
+    int getMaxSheetID();
 private:
     QSqlDatabase db;
 

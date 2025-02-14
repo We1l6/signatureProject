@@ -8,6 +8,7 @@
 #include "database/databaseManager.h"
 #include "config/configManager.h"
 #include "toolBar/toolBarManager.h"
+#include <fstream>
 
 #define ROW_COUNT 49
 
@@ -34,6 +35,7 @@ private:
     Ui::MainWindow *ui;
     QVector<RowWidget*> rows;
     int m_sheetID = 1;
+    int m_maxSheetID = 1;
     ToolBarManager* toolBar = nullptr;
 };
 #endif // MAINWINDOW_H
