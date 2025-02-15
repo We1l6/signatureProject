@@ -7,3 +7,6 @@
 [submodule "external/yaml-cpp"]
 	path = external/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp.git
+[submodule "external/inja"]
+	path = external/inja
+	url = https://github.com/pantor/inja.git
