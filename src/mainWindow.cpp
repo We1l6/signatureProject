@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_maxSheetID = m_sheetID;
 
     setWindowTitle(QString::number(m_sheetID));
-    std::vector<Structures::RowData> rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
+    rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
 
     for (int i = 0; i < ROW_COUNT; ++i) {
         //dbManager.insertRow(m_sheetID, i);
@@ -51,7 +51,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(toolBar, &ToolBarManager::leftArrowActionRequested, this, &MainWindow::leftArrowActionRequested);
     connect(toolBar, &ToolBarManager::rightArrowActionRequested, this, &MainWindow::rightArrowActionRequested);
     connect(toolBar, &ToolBarManager::newListActionRequested, this, &MainWindow::newListActionRequested);
+    connect(toolBar, &ToolBarManager::createCurrentListActionRequested, this, &MainWindow::createCurrentListActionRequested);
 
+    QString html = "<h1>Привет, мир!</h1><p>Это PDF, созданный из HTML.</p>";
+    QString outputPath = "output.pdf";
+    PrintManager printManager;
+    printManager.convertHtmlToPdf(html, outputPath);
 }
 
 MainWindow::~MainWindow()
@@ -101,3 +106,7 @@ void MainWindow::newListActionRequested(){
     }
 }
 
+void MainWindow::createCurrentListActionRequested(){
+    TemplateRenderer templateRenderer;
+    templateRenderer.fillHTMLfile("list.html", "output.html", rowsData);
+}

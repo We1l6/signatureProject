@@ -9,6 +9,7 @@
 #define LOG_INFO(...) Logger::getInstance().getLogger()->info(__VA_ARGS__)
 #define LOG_WARN(...) Logger::getInstance().getLogger()->warn(__VA_ARGS__)
 #define LOG_ERROR(...) Logger::getInstance().getLogger()->error(__VA_ARGS__)
+//#define LOG_DEBUG(...) Logger::getInstance().getLogger()->debug(__VA_ARGS__)
 
 class Logger {
 public:
