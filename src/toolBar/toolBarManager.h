@@ -12,11 +12,13 @@ signals:
     void leftArrowActionRequested();
     void rightArrowActionRequested();
     void newListActionRequested();
+    void createCurrentListActionRequested();
 
 private slots:
     void leftArrowActionTriggered();
     void rightArrowActionTriggered();
     void newListActionTriggered();
+    void createCurrentListActionTriggered();
 };
 
 #endif // TOOLBARMANAGER_H

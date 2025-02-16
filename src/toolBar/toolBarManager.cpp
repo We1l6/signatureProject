@@ -16,9 +16,14 @@ ToolBarManager::ToolBarManager(QWidget *parent) : QToolBar(parent) {
     connect(newList, &QAction::triggered, this, &ToolBarManager::newListActionTriggered);
 
 
+    QAction *createCurrentList = new QAction(QIcon(""), tr("Надрукувати поточний лист"), this);
+    newList->setShortcut(QKeySequence::Open);
+    connect(createCurrentList, &QAction::triggered, this, &ToolBarManager::createCurrentListActionTriggered);
+
     addAction(leftArrow);
     addAction(rightArrow);
     addAction(newList);
+    addAction(createCurrentList);
 }
 
 void ToolBarManager::leftArrowActionTriggered()
@@ -36,3 +41,7 @@ void ToolBarManager::newListActionTriggered()
     emit newListActionRequested();
 }
 
+void ToolBarManager::createCurrentListActionTriggered()
+{
+    emit createCurrentListActionRequested();
+}

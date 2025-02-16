@@ -9,6 +9,8 @@
 #include "config/configManager.h"
 #include "toolBar/toolBarManager.h"
 #include <fstream>
+#include "printManager/printManager.h"
+#include "printManager/templateRenderer.h"
 
 #define ROW_COUNT 49
 
@@ -31,11 +33,13 @@ private:
     void rightArrowActionRequested();
     void leftArrowActionRequested();
     void newListActionRequested();
+    void createCurrentListActionRequested();
 
     Ui::MainWindow *ui;
-    QVector<RowWidget*> rows;
+    std::vector<RowWidget*> rows;
     int m_sheetID = 1;
     int m_maxSheetID = 1;
     ToolBarManager* toolBar = nullptr;
+    std::vector<Structures::RowData> rowsData;
 };
 #endif // MAINWINDOW_H
