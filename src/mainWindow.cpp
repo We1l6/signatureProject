@@ -52,11 +52,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(toolBar, &ToolBarManager::rightArrowActionRequested, this, &MainWindow::rightArrowActionRequested);
     connect(toolBar, &ToolBarManager::newListActionRequested, this, &MainWindow::newListActionRequested);
     connect(toolBar, &ToolBarManager::createCurrentListActionRequested, this, &MainWindow::createCurrentListActionRequested);
-
-    QString html = "<h1>Привет, мир!</h1><p>Это PDF, созданный из HTML.</p>";
-    QString outputPath = "output.pdf";
-    PrintManager printManager;
-    printManager.convertHtmlToPdf(html, outputPath);
 }
 
 MainWindow::~MainWindow()
@@ -107,6 +102,12 @@ void MainWindow::newListActionRequested(){
 }
 
 void MainWindow::createCurrentListActionRequested(){
+    DatabaseManager& dbManager = DatabaseManager::instance();
+    rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
     TemplateRenderer templateRenderer;
     templateRenderer.fillHTMLfile("list.html", "output.html", rowsData);
+
+    QString outputPath = "output.pdf";
+    PrintManager printManager;
+    printManager.convertHtmlToPdf("output.html", outputPath);
 }
