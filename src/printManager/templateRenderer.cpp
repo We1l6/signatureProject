@@ -45,7 +45,7 @@ inja::json TemplateRenderer::convertRowDataToJson(const Structures::RowData rowD
     row_json["account_number"] = rowData.accountNumber.toStdString();
     row_json["number_of_sheets"] = rowData.numberOfSheets;
     row_json["date_of_receipt"] = rowData.dateOfReceipt.toStdString();
-    row_json["receipt_signature"] = rowData.firstSign;
-    row_json["return_signature"] = rowData.secondSign;
+    row_json["receipt_signature"] = QString::fromUtf8(rowData.firstSign.toBase64()).toStdString();
+    row_json["return_signature"] = QString::fromUtf8(rowData.secondSign.toBase64()).toStdString();;
     return row_json;
 }
