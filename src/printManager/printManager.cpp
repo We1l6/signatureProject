@@ -1,32 +1,43 @@
 #include "printManager.h"
+#include <QProcess>
+#include <QDebug>
 
 PrintManager::PrintManager() {}
 
 void PrintManager::convertHtmlToPdf(const QString &htmlFilePath, const QString &outputFilePath) {
     QFile file(htmlFilePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Could not open HTML file:" << htmlFilePath;
+    if (!file.exists()) {
+        qWarning() << "HTML file not found:" << htmlFilePath;
         return;
     }
 
-    QTextStream in(&file);
-    QString htmlContent = in.readAll();
-    file.close();
+    QString wkhtmltopdfPath = "C:/Users/We1l6.f/Documents/signatureProject/external/wkhtmltopdf/bin/wkhtmltopdf.exe"; // или полный путь, например: "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"
 
-    htmlContent.prepend("<style>body, html { margin: 24px; padding: 0; margin-left: 40px;}</style>");
+    QProcess checkProcess;
+    checkProcess.start(wkhtmltopdfPath, QStringList() << "--version");
+    checkProcess.waitForFinished();
+    if (checkProcess.exitCode() != 0) {
+        qWarning() << "Wkhtmltopdf could not be found. Make sure it is installed and available.";
+        return;
+    }
 
-    QTextDocument document;
-    document.setHtml(htmlContent);
-    document.setDocumentMargin(0);
+    QProcess process;
+    QStringList arguments;
 
-    QPrinter printer(QPrinter::PrinterResolution);
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(outputFilePath);
-    printer.setFullPage(true);
-    printer.setPageMargins(QMarginsF(60, 24, 24, 24));
-    printer.setPageSize(QPageSize(QPageSize::A4));
+    arguments << htmlFilePath << outputFilePath;
 
-    document.setPageSize(printer.pageRect(QPrinter::Point).size());
+    process.start(wkhtmltopdfPath, arguments);
+    if (!process.waitForStarted()) {
+        qWarning() << "Wkhtmltopdf failed to start.";
+        return;
+    }
 
-    document.print(&printer);
+    process.waitForFinished();
+
+    if (process.exitCode() == 0) {
+        qDebug() << "PDF created successfully: " << outputFilePath;
+    } else {
+        qWarning() << "Error converting HTML to PDF.";
+        qWarning() << process.readAllStandardError();
+    }
 }
