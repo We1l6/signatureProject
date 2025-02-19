@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QTextStream>
 
+
 class PrintManager
 {
 public:
