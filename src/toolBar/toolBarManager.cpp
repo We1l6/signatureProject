@@ -20,10 +20,15 @@ ToolBarManager::ToolBarManager(QWidget *parent) : QToolBar(parent) {
     newList->setShortcut(QKeySequence::Open);
     connect(createCurrentList, &QAction::triggered, this, &ToolBarManager::createCurrentListActionTriggered);
 
+    QAction *createAlltLists = new QAction(QIcon(""), tr("Надрукувати усі листи"), this);
+    newList->setShortcut(QKeySequence::Open);
+    connect(createAlltLists, &QAction::triggered, this, &ToolBarManager::createAlltListsActionTriggered);
+
     addAction(leftArrow);
     addAction(rightArrow);
     addAction(newList);
     addAction(createCurrentList);
+    addAction(createAlltLists);
 }
 
 void ToolBarManager::leftArrowActionTriggered()
@@ -44,4 +49,8 @@ void ToolBarManager::newListActionTriggered()
 void ToolBarManager::createCurrentListActionTriggered()
 {
     emit createCurrentListActionRequested();
+}
+
+void ToolBarManager::createAlltListsActionTriggered(){
+    emit createAlltListsActionRequested();
 }
