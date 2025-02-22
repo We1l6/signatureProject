@@ -31,6 +31,9 @@ namespace Queries {
 
     const QString selectFromGridTable = ("SELECT sheet_id, row_number, to_whom_issued, unit, account_number, number_of_sheets, date_of_receipt, receipt_signature, return_signature "
                                          "FROM gridTable WHERE sheet_id = :sheetID");
+
+    const QString selectAllFromGridTable = ("SELECT sheet_id, row_number, to_whom_issued, unit, account_number, number_of_sheets, date_of_receipt, receipt_signature, return_signature "
+                                            "FROM gridTable");
 }
 
 #endif // QUERIES_H
