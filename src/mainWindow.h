@@ -11,6 +11,7 @@
 #include <fstream>
 #include "printManager/printManager.h"
 #include "printManager/templateRenderer.h"
+#include <QFileDialog>
 
 #define ROW_COUNT 49
 
@@ -34,6 +35,7 @@ private:
     void leftArrowActionRequested();
     void newListActionRequested();
     void createCurrentListActionRequested();
+    void createAlltListsActionRequested();
 
     Ui::MainWindow *ui;
     std::vector<RowWidget*> rows;

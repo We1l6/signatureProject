@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(toolBar, &ToolBarManager::rightArrowActionRequested, this, &MainWindow::rightArrowActionRequested);
     connect(toolBar, &ToolBarManager::newListActionRequested, this, &MainWindow::newListActionRequested);
     connect(toolBar, &ToolBarManager::createCurrentListActionRequested, this, &MainWindow::createCurrentListActionRequested);
+    connect(toolBar, &ToolBarManager::createAlltListsActionRequested, this, &MainWindow::createAlltListsActionRequested);
 }
 
 MainWindow::~MainWindow()
@@ -101,13 +102,103 @@ void MainWindow::newListActionRequested(){
     }
 }
 
-void MainWindow::createCurrentListActionRequested(){
+void MainWindow::createCurrentListActionRequested() {
+    QString folderPath = QFileDialog::getExistingDirectory(
+        nullptr,
+        "Select a folder",
+        QDir::homePath()
+        );
+
+    if (folderPath.isEmpty()) {
+        qWarning() << "Folder not selected.";
+        return;
+    }
+
     DatabaseManager& dbManager = DatabaseManager::instance();
     rowsData = dbManager.fetchRowsBySheetID(m_sheetID);
-    TemplateRenderer templateRenderer;
-    templateRenderer.fillHTMLfile("list.html", "output.html", rowsData);
 
-    QString outputPath = "output.pdf";
+    if (rowsData.empty()) {
+        qWarning() << "No data found for sheet ID:" << m_sheetID;
+        return;
+    }
+
+    QDir().mkpath("temp");  // Убедимся, что папка temp существует
+
+    QString htmlPath = "temp/output.html";
+    TemplateRenderer templateRenderer;
+    templateRenderer.fillHTMLfile("list.html", htmlPath, rowsData);
+
+    QString pdfTempPath = "temp/output.pdf";
     PrintManager printManager;
-    printManager.convertHtmlToPdf("output.html", outputPath);
+    printManager.convertHtmlToPdf(htmlPath, pdfTempPath);
+
+    if (!QFile::exists(pdfTempPath)) {
+        qWarning() << "Error: PDF file was not created!";
+        return;
+    }
+
+    QString finalPdfPath = folderPath + "/output.pdf";
+    if (QFile::exists(finalPdfPath)) {
+        QFile::remove(finalPdfPath);
+    }
+
+    if (QFile::rename(pdfTempPath, finalPdfPath)) {
+        qDebug() << "PDF successfully moved to:" << finalPdfPath;
+    } else {
+        qWarning() << "Failed to move PDF. Trying to copy.";
+        if (QFile::copy(pdfTempPath, finalPdfPath)) {
+            QFile::remove(pdfTempPath);
+            qDebug() << "PDF successfully copied to:" << finalPdfPath;
+        } else {
+            qWarning() << "Error copying PDF to:" << finalPdfPath;
+        }
+    }
+}
+
+
+void MainWindow::createAlltListsActionRequested() {
+    QString folderPath = QFileDialog::getExistingDirectory(
+        nullptr,
+        "Select a folder",
+        QDir::homePath()
+        );
+
+    if (folderPath.isEmpty()) {
+        qWarning() << "Folder not selected.";
+        return;
+    }
+
+    DatabaseManager& dbManager = DatabaseManager::instance();
+    TemplateRenderer templateRenderer;
+    QStringList htmlFiles;
+    std::vector<std::vector<Structures::RowData>> allRows = dbManager.fetchAllRowsGroupedBySheet();
+
+    QDir().mkpath("temp");
+
+    for (int i = 0; i < allRows.size(); ++i) {
+        QString outputHtmlPath = "temp/alloutput" + QString::number(i) + ".html";
+        templateRenderer.fillHTMLfile("list.html", outputHtmlPath, allRows[i]);
+        htmlFiles.push_back(outputHtmlPath);
+    }
+
+    PrintManager printManager;
+    QString tempPdfPath = "temp/alloutput.pdf";
+    printManager.convertMultipleHtmlToPdf(htmlFiles, tempPdfPath);
+
+    QString finalPdfPath = folderPath + "/alloutput.pdf";
+    if (QFile::exists(finalPdfPath)) {
+        QFile::remove(finalPdfPath);
+    }
+
+    if (QFile::rename(tempPdfPath, finalPdfPath)) {
+        qDebug() << "PDF successfully moved to:" << finalPdfPath;
+    } else {
+        qWarning() << "Failed to move PDF. Let's try copying.";
+        if (QFile::copy(tempPdfPath, finalPdfPath)) {
+            QFile::remove(tempPdfPath);
+            qDebug() << "PDF successfully copied to:" << finalPdfPath;
+        } else {
+            qWarning() << "Error copying PDF to:" << finalPdfPath;
+        }
+    }
 }

@@ -146,3 +146,38 @@ int DatabaseManager::getMaxSheetID(){
     return -1;
 }
 
+std::vector<std::vector<Structures::RowData>> DatabaseManager::fetchAllRowsGroupedBySheet() {
+    std::vector<std::vector<Structures::RowData>> groupedRows;
+    std::map<int, std::vector<Structures::RowData>> sheetMap;
+    QSqlQuery query;
+
+    query.prepare(Queries::selectAllFromGridTable);
+    if (!query.exec()) {
+        qDebug() << "Error fetching rows:" << query.lastError().text();
+        LOG_WARN("Error fetching rows: " + query.lastError().text().toStdString());
+        return groupedRows;
+    }
+
+    while (query.next()) {
+        Structures::RowData rowData;
+        rowData.sheetID = query.value("sheet_id").toInt();
+        rowData.rowNumber = query.value("row_number").toInt();
+        rowData.toWhomIssued = query.value("to_whom_issued").toString();
+        rowData.unit = query.value("unit").toString();
+        rowData.accountNumber = query.value("account_number").toString();
+        rowData.numberOfSheets = query.value("number_of_sheets").toInt();
+        rowData.dateOfReceipt = query.value("date_of_receipt").toString();
+        rowData.firstSign = query.value("receipt_signature").toByteArray();
+        rowData.secondSign = query.value("return_signature").toByteArray();
+
+        sheetMap[rowData.sheetID].push_back(rowData);
+    }
+
+    for (auto& [sheetID, rows] : sheetMap) {
+        groupedRows.push_back(std::move(rows));
+    }
+
+    return groupedRows;
+}
+
+
