@@ -13,7 +13,6 @@ class DatabaseManager
 {
 public:
     static DatabaseManager& instance();
-
     bool connect(const QString& dbPath);
     void disconnect();
     bool executeQuery(const QString& queryStr);
@@ -21,6 +20,8 @@ public:
     bool insertRow(int sheetID, int rowNumber);
     bool updateRowData(const Structures::RowData& rowData);
     std::vector<Structures::RowData> fetchRowsBySheetID(int sheetID);
+    std::vector<std::vector<Structures::RowData>> fetchAllRowsGroupedBySheet();
+    int getMaxSheetID();
 
 private:
     QSqlDatabase db;

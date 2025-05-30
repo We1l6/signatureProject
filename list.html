@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3</title>
+    <style>
+        body{
+            margin-right: 30px;
+            margin-left: 25px;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; 
+        font-family: 'Times New Roman';
+        font-size: 14px;
+        background-color:transparent;
+    }
+    table, th, td {
+        border: 1px solid black;
+        min-height: 30px;
+    }
+    .tr{
+
+    }
+    .col1, .col14{
+        width: 4%;
+    }
+    .row1{
+        height: 40px;
+    }
+    .row2{
+        height: 23px;
+        
+    }
+    h4{
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <table>
+        <tr class="row1">
+            <th class="col1">№ з/п</th>
+            <th class="col2">Кому видано</th>
+            <th class="col3">Підрозділ</th>
+            <th class="col4">Обліковий<br>номер</th>
+            <th class="col5">Кількість<br>аркушів</th>
+            <th class="col6">Дата<br>отримання</th>
+            <th class="col7">Підпис про<br>отримання</th>
+            <th class="col8">Підпис про<br>зворотний<br>прийом, дата</th>
+        </tr>
+        {% set counter = 1 %}
+        {% set rowNum = 12 %}
+        {% for row in rows %}
+        <tr class="row2">
+            <th class="col1">{{ counter }}</th>
+            <th class="col2">{{ row.to_whom_issued }}</th>
+            <th class="col3">{{ row.unit }}</th>
+            <th class="col4">{{ row.account_number }}</th>
+            <th class="col5">{{ row.number_of_sheets }}</th>
+            <th class="col6">{{ row.date_of_receipt }}</th>
+            <th class="col7">{{ row.receipt_signature }}</th>
+            <th class="col8">{{ row.return_signature }}</th>
+            </th>
+        </tr>
+        {% set counter = counter + 1 %}
+        {% set rowNum = rowNum + 1 %}
+        {% endfor %}
+
+    </table>
+</body>
+</html>

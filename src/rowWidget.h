@@ -18,9 +18,12 @@ public:
     explicit RowWidget(const int index, const int sheetID, const QVector<int> &columnWidths, const int rowHeight, QVBoxLayout* verticalLayout, QWidget *parent = nullptr);
     void setRowData(Structures::RowData rowData);
     Structures::RowData getRowData();
+    void clearRow();
+    void setSheetID(int sheetID);
 
 private:
-    SignatureWindow *signatureWindow = nullptr;
+    SignatureWindow *signatureWindow1 = nullptr;
+    SignatureWindow *signatureWindow2 = nullptr;
     int m_index = 0;
     QVector<QLineEdit*> m_inputs;
     QPushButton *m_button1 = nullptr;
@@ -35,5 +38,7 @@ private:
 
     void button1Pressed();
     void button2Pressed();
+public slots:
+    void onSignatureSaved(int signatureID, QByteArray imgBit);
 };
 #endif // ROWWIDGET_H

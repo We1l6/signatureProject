@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Sql)
+find_package(Qt6 REQUIRED COMPONENTS PrintSupport)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -25,6 +26,9 @@ include(AddGitSubmodule)
 
 add_git_submodule("${PROJECT_SOURCE_DIR}/external/Catch2")
 add_git_submodule("${PROJECT_SOURCE_DIR}/external/spdlog")
+add_git_submodule("${PROJECT_SOURCE_DIR}/external/yaml-cpp")
+#add_git_submodule("${PROJECT_SOURCE_DIR}/external/inja")
+add_git_submodule("${PROJECT_SOURCE_DIR}/external/json")
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(signatureProject
@@ -38,6 +42,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/signature/signatureWindow.h src/signature/signatureWindow.cpp src/signature/signatureWindow.ui
         src/signature/signatureCanvas.h src/signature/signatureCanvas.cpp
         src/signature/signatureSaver.h src/signature/signatureSaver.cpp
+        src/config/configManager.h src/config/configManager.cpp
+        src/toolBar/toolBarManager.h src/toolBar/toolBarManager.cpp
+        src/printManager/printManager.h src/printManager/printManager.cpp
+        src/printManager/templateRenderer.h src/printManager/templateRenderer.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET signatureProject APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -60,7 +68,10 @@ endif()
 target_link_libraries(signatureProject PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 #target_link_libraries(signatureProject PUBLIC Catch2::Catch2WithMain)
 target_link_libraries(signatureProject PRIVATE spdlog::spdlog)
-    target_link_libraries(signatureProject PRIVATE Qt6::Sql)
+target_link_libraries(signatureProject PRIVATE Qt6::Sql)
+target_link_libraries(signatureProject PRIVATE yaml-cpp::yaml-cpp)
+target_link_libraries(signatureProject PRIVATE Qt6::PrintSupport)
+target_link_libraries(signatureProject PRIVATE nlohmann_json::nlohmann_json)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
